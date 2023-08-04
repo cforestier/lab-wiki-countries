@@ -11,3 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.list-countries {
+  display: flex !important;
+  align-items: center;
+}
+
+.display-countries {
+  display: flex;
+}
+.list-countries-complete {
+  width: 10px;
+}
