@@ -1,24 +1,32 @@
 import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 function CountryDetails({ countries }) {
   const { countryId } = useParams();
   const [foundCountry, setFoundCountry] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  useEffect(() => {
+    setIsLoading(true);
+    axios
+      .get(`https://ih-countries-api.herokuapp.com/countries/${countryId}`)
+      .then((response) => {
+        setFoundCountry(response.data);
+        setIsLoading(false);
+      })
+      .catch((err) => console.log(err));
+  }, [countryId]);
   const getCountry = (alpha3Code) =>
     countries.find((country) => country.alpha3Code === alpha3Code);
 
-  useEffect(() => {
-    const countrySelected = getCountry(countryId);
-    if (countrySelected) {
-      setFoundCountry(countrySelected);
-    }
-  }, [countryId]);
   return (
     <>
-      {!foundCountry && (
-        <h1>please click on a country to display its details</h1>
-      )}
-      {foundCountry && (
+      {!foundCountry || isLoading === null ? (
+        <h1>
+          please click on a country to display its details or wait until data is
+          loaded
+        </h1>
+      ) : (
         <div className="col-7">
           <h1>{foundCountry.name.common}</h1>
           <table className="table">
